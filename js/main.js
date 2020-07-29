@@ -9,6 +9,30 @@ class Book {
   }
 }
 
+const myLibrary = [
+  {
+    title: 'To Kill a Mockingbird',
+    author: 'Harper Lee',
+    pages: '384',
+    read: false,
+  },
+  {
+    title: 'Lord of The Flies',
+    author: 'William Golding',
+    pages: '224',
+    read: false,
+  },
+  {
+    title: 'The Great Gatsby',
+    author: 'F.Scott Fitzgerald',
+    pages: '180',
+    read: false,
+  },
+];
+
+const table = document.querySelector('table');
+const data = Object.keys(myLibrary[0]);
+
 function generateTableHead(table, data) {
   const thead = table.createTHead();
   const row = thead.insertRow();
@@ -36,28 +60,40 @@ function render(table, data, library) {
   generateTableBody(table, library);
 }
 
-const myLibrary = [
-  {
-    title: 'To Kill a Mockingbird',
-    author: 'Harper Lee',
-    pages: '384',
-    read: false,
-  },
-  {
-    title: 'Lord of The Flies',
-    author: 'William Golding',
-    pages: '224',
-    read: false,
-  },
-  {
-    title: 'The Great Gatsby',
-    author: 'F.Scott Fitzgerald',
-    pages: '180',
-    read: false,
-  },
-];
+function displayForm() {
+  const form = document.getElementById('newBook');
+  if (form.style.display === 'none') {
+    form.style.display = 'block';
+    document.getElementById('form').style.display = 'none';
+  } else {
+    form.style.display = 'none';
+    document.getElementById('form').style.display = 'block';
+  }
+}
 
-const table = document.querySelector('table');
-const data = Object.keys(myLibrary[0]);
+function getValuesFromForm(array) {
+  const tempArray = [];
+  array.forEach(element => {
+    tempArray.push(element.value);
+  });
+  return tempArray;
+}
+
+function addBookToLibrary(tempBook) {
+  myLibrary.push(tempBook);
+  displayForm();
+}
+
+// eslint-disable-next-line no-unused-vars
+function createBook() {
+  const allvalues = getValuesFromForm(document.querySelectorAll('.values'));
+  const { checked } = document.getElementById('read');
+  const tempBook = new Book(...allvalues, checked);
+  addBookToLibrary(tempBook);
+}
+
+function addNewBookTable() {
+  
+}
 
 render(table, data, myLibrary);
