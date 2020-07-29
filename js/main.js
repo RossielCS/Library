@@ -9,6 +9,33 @@ class Book {
   }
 }
 
+function generateTableHead(table, data) {
+  const thead = table.createTHead();
+  const row = thead.insertRow();
+  data.forEach(x => {
+    const th = document.createElement('th');
+    const text = document.createTextNode(x);
+    th.appendChild(text);
+    row.appendChild(th);
+  });
+}
+
+function generateTableBody(table, library) {
+  library.forEach(x => {
+    const row = table.insertRow();
+    Object.values(x).forEach(y => {
+      const cell = row.insertCell();
+      const text = document.createTextNode(y);
+      cell.appendChild(text);
+    });
+  });
+}
+
+function render(table, data, library) {
+  generateTableHead(table, data);
+  generateTableBody(table, library);
+}
+
 const myLibrary = [
   {
     title: 'To Kill a Mockingbird',
@@ -29,3 +56,8 @@ const myLibrary = [
     read: false,
   },
 ];
+
+const table = document.querySelector('table');
+const data = Object.keys(myLibrary[0]);
+
+render(table, data, myLibrary);
