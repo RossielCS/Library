@@ -30,8 +30,25 @@ const myLibrary = [
   },
 ];
 
+let countRows = 0;
+
 const table = document.querySelector('table');
 const data = Object.keys(myLibrary[0]);
+
+function removeBook(info) {
+  info.parentElement.remove();
+}
+
+function addButton(row) {
+  const cell = row.insertCell();
+  const btn = document.createElement('button');
+  btn.addEventListener('click', e => {
+    removeBook(e.target.parentElement);
+  });
+  const btnTxt = document.createTextNode('REMOVE');
+  btn.appendChild(btnTxt);
+  cell.appendChild(btn);
+}
 
 function generateTableHead(table, data) {
   const thead = table.createTHead();
@@ -47,11 +64,17 @@ function generateTableHead(table, data) {
 function generateTableBody(table, library) {
   library.forEach(x => {
     const row = table.insertRow();
-    Object.values(x).forEach(y => {
+    row.setAttribute('id', `row${countRows}`);
+    const values = Object.values(x);
+    values.forEach(y => {
       const cell = row.insertCell();
       const text = document.createTextNode(y);
       cell.appendChild(text);
+      if (y === values[values.length - 1]) {
+        addButton(row);
+      }
     });
+    countRows += 1;
   });
 }
 
@@ -71,6 +94,12 @@ function displayForm() {
   }
 }
 
+function btnDisplay() {
+  document.getElementById('newBook').addEventListener('click', () => {
+    displayForm();
+  });
+}
+
 function getValuesFromForm(array) {
   const tempArray = [];
   array.forEach(element => {
@@ -84,16 +113,27 @@ function addBookToLibrary(tempBook) {
   displayForm();
 }
 
-// eslint-disable-next-line no-unused-vars
-function createBook() {
-  const allvalues = getValuesFromForm(document.querySelectorAll('.values'));
-  const { checked } = document.getElementById('read');
-  const tempBook = new Book(...allvalues, checked);
-  addBookToLibrary(tempBook);
+function addNewBookTable() {
+  const row = table.insertRow();
+  row.setAttribute('id', `row${countRows}`);
+  const values = Object.values(myLibrary[myLibrary.length - 1]);
+  values.forEach(x => {
+    const cell = row.insertCell();
+    const text = document.createTextNode(x);
+    cell.appendChild(text);
+  });
+  addButton(row);
+  countRows += 1;
 }
 
-function addNewBookTable() {
-  
+// eslint-disable-next-line no-unused-vars
+function createBook() {
+  const allValues = getValuesFromForm(document.querySelectorAll('.values'));
+  const { checked } = document.getElementById('read');
+  const tempBook = new Book(...allValues, checked);
+  addBookToLibrary(tempBook);
+  addNewBookTable();
 }
 
 render(table, data, myLibrary);
+btnDisplay();
