@@ -10,9 +10,18 @@
 <body id='body'>
   <h1>Library</h1>
   
-  <table>
-  </table><br><br>
-  
+  <table id='table'>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Number of Pages</th>
+        <th>Read</th>
+      </tr>
+    </thead>
+  </table>
+  <br>
+  <br>
   <form id="form">
     <label for="title">Title:</label>
     <input class="values" type="text" id="title" name="title"><br><br>
@@ -22,9 +31,9 @@
     <input class="values" type="number" id="pages" name="pages" min="1" max="8000" step="1"><br><br>
     <label for="read">Read:</label>
     <input type="checkbox" id="read" name="read"><br><br>
-    <button type="button" onclick="createBook()">ADD BOOK</button>
+    <button type="button" id='addBookBtn'>ADD BOOK</button>
   </form>
-    <button id="newBook" type="button">NEW BOOK</button>
+    <button id="newBookBtn" type="button">NEW BOOK</button>
   
   <script src="./js/main.js"></script>  
 </body>

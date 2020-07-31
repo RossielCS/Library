@@ -9,131 +9,122 @@ class Book {
   }
 }
 
-const myLibrary = [
-  {
-    title: 'To Kill a Mockingbird',
-    author: 'Harper Lee',
-    pages: '384',
-    read: false,
-  },
-  {
-    title: 'Lord of The Flies',
-    author: 'William Golding',
-    pages: '224',
-    read: false,
-  },
-  {
-    title: 'The Great Gatsby',
-    author: 'F.Scott Fitzgerald',
-    pages: '180',
-    read: false,
-  },
-];
+Book.prototype.changeReadStatus = () => {
+  this.read = !this.read;
+};
 
-let countRows = 0;
+const myLibrary = [];
 
-const table = document.querySelector('table');
-const data = Object.keys(myLibrary[0]);
-
-function removeBook(info) {
-  info.parentElement.remove();
+function createBook(values) {
+  const newBook = new Book(...values);
+  return newBook;
 }
 
-function addButton(row) {
+function addBookToLibrary(newBook, library) {
+  library.push(newBook);
+}
+
+function removeBook(library, index) {
+  library.splice(index, 1);
+}
+
+function changeBookStatus(library, index) {
+  library[index].changeReadStatus();
+}
+
+function generateTableBody() {
+  const verifyBody = document.getElementsByTagName('tbody')[0];
+  if (verifyBody) verifyBody.remove();
+  const table = document.getElementById('table');
+  const tBody = document.createElement('tbody');
+  tBody.setAttribute('id', 'tBody');
+  table.appendChild(tBody);
+}
+
+function addButton(row, index, library) {
   const cell = row.insertCell();
   const btn = document.createElement('button');
-  btn.addEventListener('click', e => {
-    removeBook(e.target.parentElement);
-  });
   const btnTxt = document.createTextNode('REMOVE');
+  btn.addEventListener('click', () => {
+    removeBook(library, index);
+    // eslint-disable-next-line no-use-before-define
+    render(library);
+  });
   btn.appendChild(btnTxt);
   cell.appendChild(btn);
 }
 
-function generateTableHead(table, data) {
-  const thead = table.createTHead();
-  const row = thead.insertRow();
-  data.forEach(x => {
-    const th = document.createElement('th');
-    const text = document.createTextNode(x);
-    th.appendChild(text);
-    row.appendChild(th);
-  });
-}
-
-function generateTableBody(table, library) {
+function addValuesToBody(library) {
+  const body = document.getElementById('tBody');
+  let index = 0;
   library.forEach(x => {
-    const row = table.insertRow();
-    row.setAttribute('id', `row${countRows}`);
+    const row = body.insertRow();
     const values = Object.values(x);
     values.forEach(y => {
       const cell = row.insertCell();
-      const text = document.createTextNode(y);
-      cell.appendChild(text);
+      let content = '';
+      if (typeof y === 'boolean') {
+        content = document.createElement('input');
+        content.setAttribute('type', 'checkbox');
+        content.setAttribute('id', `checkbox${index}`)
+        content.checked = y;
+      } else {
+        content = document.createTextNode(y);
+      }
+      cell.appendChild(content);
       if (y === values[values.length - 1]) {
-        addButton(row);
+        addButton(row, index, library);
       }
     });
-    countRows += 1;
+    index += 1;
   });
 }
 
-function render(table, data, library) {
-  generateTableHead(table, data);
-  generateTableBody(table, library);
+function render(library) {
+  generateTableBody();
+  addValuesToBody(library);
+}
+
+function getValuesFromInput() {
+  const textValues = document.querySelectorAll('.values');
+  const { checked } = document.getElementById('read');
+  const valuesArray = [];
+  textValues.forEach(element => {
+    valuesArray.push(element.value);
+  });
+  valuesArray.push(checked);
+  return valuesArray;
 }
 
 function displayForm() {
-  const form = document.getElementById('newBook');
-  if (form.style.display === 'none') {
-    form.style.display = 'block';
-    document.getElementById('form').style.display = 'none';
-  } else {
+  const button = document.getElementById('newBookBtn');
+  const form = document.getElementById('form');
+  if (button.style.display === 'none') {
+    button.style.display = 'block';
     form.style.display = 'none';
-    document.getElementById('form').style.display = 'block';
+  } else {
+    button.style.display = 'none';
+    form.style.display = 'block';
   }
 }
 
-function btnDisplay() {
-  document.getElementById('newBook').addEventListener('click', () => {
+function addEventNewBookButton(library) {
+  const button = document.getElementById('addBookBtn');
+  button.addEventListener('click', () => {
+    const values = getValuesFromInput();
+    const newBook = createBook(values);
+    addBookToLibrary(newBook, library);
+    render(library);
+  });
+}
+
+function addEventDisplayButton() {
+  const button = document.getElementById('newBookBtn');
+  button.addEventListener('click', () => {
     displayForm();
   });
 }
 
-function getValuesFromForm(array) {
-  const tempArray = [];
-  array.forEach(element => {
-    tempArray.push(element.value);
-  });
-  return tempArray;
-}
-
-function addBookToLibrary(tempBook) {
-  myLibrary.push(tempBook);
-  displayForm();
-}
-
-function addNewBookTable() {
-  const row = table.insertRow();
-  row.setAttribute('id', `row${countRows}`);
-  const values = Object.values(myLibrary[myLibrary.length - 1]);
-  values.forEach(x => {
-    const cell = row.insertCell();
-    const text = document.createTextNode(x);
-    cell.appendChild(text);
-  });
-  addButton(row);
-  countRows += 1;
-}
-
-// eslint-disable-next-line no-unused-vars
-function createBook() {
-  const allValues = getValuesFromForm(document.querySelectorAll('.values'));
-  const { checked } = document.getElementById('read');
-  const tempBook = new Book(...allValues, checked);
-  addBookToLibrary(tempBook);
-  addNewBookTable();
-}
-
-render(table, data, myLibrary);
-btnDisplay();
+render(myLibrary);
+addEventDisplayButton();
+addEventNewBookButton(myLibrary);
