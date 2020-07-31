@@ -1,4 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
 class Book {
   constructor(title, author, pages, read) {
     this.title = title;
