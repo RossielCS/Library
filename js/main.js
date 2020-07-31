@@ -53,6 +53,7 @@ function addButtonRemove(row, index, library) {
   const cell = row.insertCell();
   const btn = document.createElement('button');
   const btnTxt = document.createTextNode('REMOVE');
+  btn.setAttribute('class', 'ui red button');
   btn.addEventListener('click', () => {
     removeBook(library, index);
     render(library);
@@ -62,6 +63,9 @@ function addButtonRemove(row, index, library) {
 }
 
 function addCheckbox(value, index, library) {
+  const container = document.createElement('div');
+  container.setAttribute('class', 'ui checkbox');
+  const label = document.createElement('label');
   const content = document.createElement('input');
   content.setAttribute('type', 'checkbox');
   content.setAttribute('id', `checkbox${index}`);
@@ -70,7 +74,9 @@ function addCheckbox(value, index, library) {
     changeBookStatus(library, index);
     render(library);
   });
-  return content;
+  container.appendChild(content);
+  container.appendChild(label);
+  return container;
 }
 
 function addValuesToBody(library) {
@@ -115,19 +121,6 @@ function clearInputs() {
   document.getElementById('read').checked = false;
 }
 
-function displayForm() {
-  const button = document.getElementById('newBookBtn');
-  const form = document.getElementById('form');
-  if (button.style.display === 'none') {
-    button.style.display = 'block';
-    form.style.display = 'none';
-  } else {
-    button.style.display = 'none';
-    form.style.display = 'block';
-  }
-  clearInputs();
-}
-
 function addEventNewBookButton(library) {
   const button = document.getElementById('addBookBtn');
   button.addEventListener('click', () => {
@@ -135,19 +128,32 @@ function addEventNewBookButton(library) {
     const newBook = createBook(values);
     addBook(newBook, library);
     render(library);
-    displayForm();
+    // eslint-disable-next-line no-undef
+    $('.mini.modal').modal('hide');
   });
 }
 
 function addEventDisplayButton() {
   const button = document.getElementById('newBookBtn');
   button.addEventListener('click', () => {
-    displayForm();
+    // eslint-disable-next-line no-undef
+    $('.mini.modal').modal('show');
+    clearInputs();
+  });
+}
+
+function addEventCancelButton() {
+  const button = document.getElementById('cancelBtn');
+  button.addEventListener('click', () => {
+    // eslint-disable-next-line no-undef
+    $('.mini.modal').modal('hide');
+    clearInputs();
   });
 }
 
 addEventDisplayButton();
 addEventNewBookButton(myLibrary);
+addEventCancelButton();
 addBook(myBookOne, myLibrary);
 addBook(myBookTwo, myLibrary);
 render(myLibrary);

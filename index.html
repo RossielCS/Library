@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
   <link rel="stylesheet" href="./css/style.css">
   <title>Library</title>
 </head>
@@ -10,31 +11,58 @@
 <body id='body'>
   <h1>Library</h1>
   
-  <table id='table'>
+  <table id='table' class="ui celled table">
     <thead>
       <tr>
         <th>Title</th>
         <th>Author</th>
         <th>Number of Pages</th>
         <th>Read</th>
+        <th></th>
       </tr>
     </thead>
   </table>
   <br>
   <br>
-  <form id="form">
-    <label for="title">Title:</label>
-    <input class="values" type="text" id="title" name="title"><br><br>
-    <label  for="author">Author:</label>
-    <input class="values" type="text" id="author" name="author"><br><br>
-    <label for="pages">Pages:</label>
-    <input class="values" type="number" id="pages" name="pages" min="1" max="8000" step="1"><br><br>
-    <label for="read">Read:</label>
-    <input type="checkbox" id="read" name="read"><br><br>
-    <button type="button" id='addBookBtn'>ADD BOOK</button>
-  </form>
-    <button id="newBookBtn" type="button">NEW BOOK</button>
-  
-  <script src="./js/main.js"></script>  
+  <div class="ui mini modal">
+    <div class="header">Add a New Book</div>
+    <div class="content">
+      <form class="ui form" id="form">
+        <div class="field">
+          <label for="read">Read</label>
+          <div class="ui left icon input">        
+            <input class="values" type="text" id="title" name="title" placeholder="Title">
+            <i class="book icon"></i>
+          </div>
+        </div>
+
+        <div class="ui left icon input">
+          <input class="values" type="text" id="author" name="author" placeholder="Author">
+          <i class="user icon"></i>
+        </div><br><br>
+
+        <div class="ui left icon input">
+          <input class="values" type="number" id="pages" name="pages" placeholder="Pages" min="1" max="8000" step="1">
+          <i class="copy outline icon"></i>
+        </div><br><br>
+        
+        <div class="ui toggle checkbox">      
+          <input type="checkbox" id="read" name="read">
+          <label for="read">Read</label>
+        </div><br><br>
+        <div class="actions">
+          <button class="ui red button" id="cancelBtn" type="button">CANCEL</button>
+          <button class="ui green button" id='addBookBtn' type="button">ADD BOOK</button>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+
+  <button class="ui blue button" id="newBookBtn" type="button">NEW BOOK</button>
+   
+  <script src="./js/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script> 
 </body>
 </html>
