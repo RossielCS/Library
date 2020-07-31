@@ -1,5 +1,4 @@
 /* eslint linebreak-style: ["error", "windows"] */
-
 class Book {
   constructor(title, author, pages, read) {
     this.title = title;
@@ -9,18 +8,21 @@ class Book {
   }
 }
 
-Book.prototype.changeReadStatus = () => {
+Book.prototype.changeReadStatus = function auxFunction() {
   this.read = !this.read;
 };
 
 const myLibrary = [];
+
+const myBookOne = new Book('Book1 title', 'Rossiel', '321', true);
+const myBookTwo = new Book('Book2 title', 'Anibal', '456', false);
 
 function createBook(values) {
   const newBook = new Book(...values);
   return newBook;
 }
 
-function addBookToLibrary(newBook, library) {
+function addBook(newBook, library) {
   library.push(newBook);
 }
 
@@ -41,17 +43,34 @@ function generateTableBody() {
   table.appendChild(tBody);
 }
 
-function addButton(row, index, library) {
+function render(library) {
+  generateTableBody();
+  // eslint-disable-next-line no-use-before-define
+  addValuesToBody(library);
+}
+
+function addButtonRemove(row, index, library) {
   const cell = row.insertCell();
   const btn = document.createElement('button');
   const btnTxt = document.createTextNode('REMOVE');
   btn.addEventListener('click', () => {
     removeBook(library, index);
-    // eslint-disable-next-line no-use-before-define
     render(library);
   });
   btn.appendChild(btnTxt);
   cell.appendChild(btn);
+}
+
+function addCheckbox(value, index, library) {
+  const content = document.createElement('input');
+  content.setAttribute('type', 'checkbox');
+  content.setAttribute('id', `checkbox${index}`);
+  content.checked = value;
+  content.addEventListener('change', () => {
+    changeBookStatus(library, index);
+    render(library);
+  });
+  return content;
 }
 
 function addValuesToBody(library) {
@@ -64,25 +83,17 @@ function addValuesToBody(library) {
       const cell = row.insertCell();
       let content = '';
       if (typeof y === 'boolean') {
-        content = document.createElement('input');
-        content.setAttribute('type', 'checkbox');
-        content.setAttribute('id', `checkbox${index}`)
-        content.checked = y;
+        content = addCheckbox(y, index, library);
       } else {
         content = document.createTextNode(y);
       }
       cell.appendChild(content);
       if (y === values[values.length - 1]) {
-        addButton(row, index, library);
+        addButtonRemove(row, index, library);
       }
     });
     index += 1;
   });
-}
-
-function render(library) {
-  generateTableBody();
-  addValuesToBody(library);
 }
 
 function getValuesFromInput() {
@@ -96,6 +107,14 @@ function getValuesFromInput() {
   return valuesArray;
 }
 
+function clearInputs() {
+  const textValues = document.querySelectorAll('.values');
+  textValues.forEach(element => {
+    element.value = '';
+  });
+  document.getElementById('read').checked = false;
+}
+
 function displayForm() {
   const button = document.getElementById('newBookBtn');
   const form = document.getElementById('form');
@@ -106,6 +125,7 @@ function displayForm() {
     button.style.display = 'none';
     form.style.display = 'block';
   }
+  clearInputs();
 }
 
 function addEventNewBookButton(library) {
@@ -113,8 +133,9 @@ function addEventNewBookButton(library) {
   button.addEventListener('click', () => {
     const values = getValuesFromInput();
     const newBook = createBook(values);
-    addBookToLibrary(newBook, library);
+    addBook(newBook, library);
     render(library);
+    displayForm();
   });
 }
 
@@ -125,6 +146,8 @@ function addEventDisplayButton() {
   });
 }
 
-render(myLibrary);
 addEventDisplayButton();
 addEventNewBookButton(myLibrary);
+addBook(myBookOne, myLibrary);
+addBook(myBookTwo, myLibrary);
+render(myLibrary);
