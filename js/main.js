@@ -14,8 +14,8 @@ Book.prototype.changeReadStatus = function auxFunction() {
 
 const myLibrary = [];
 
-const myBookOne = new Book('Book1 title', 'Rossiel', '321', true);
-const myBookTwo = new Book('Book2 title', 'Anibal', '456', false);
+const myBookOne = new Book('To Kill a Mockingbird', 'Harper Lee', '384', true);
+const myBookTwo = new Book('Lord of The Flies', 'William Golding', '224', false);
 
 function createBook(values) {
   const newBook = new Book(...values);

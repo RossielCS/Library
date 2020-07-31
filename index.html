@@ -9,57 +9,61 @@
 </head>
 
 <body id='body'>
-  <h1>Library</h1>
+  <div class="container">
+    <h1>LIBRARY</h1>
   
-  <table id='table' class="ui celled table">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Number of Pages</th>
-        <th>Read</th>
-        <th></th>
-      </tr>
-    </thead>
-  </table>
-  <br>
-  <br>
-  <div class="ui mini modal">
-    <div class="header">Add a New Book</div>
-    <div class="content">
-      <form class="ui form" id="form">
-        <div class="field">
-          <label for="read">Read</label>
-          <div class="ui left icon input">        
-            <input class="values" type="text" id="title" name="title" placeholder="Title">
-            <i class="book icon"></i>
+    <h2>Books Added to The Library</h2>
+    <table id='table' class="ui celled table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Number of Pages</th>
+          <th>Read</th>
+          <th>Would you like to remove it?</th>
+        </tr>
+      </thead>
+    </table>
+    <br>
+    <br>
+    <div class="ui mini modal">
+      <div class="header">Add a New Book</div>
+      <div class="content">
+        <form class="ui form" id="form">
+          <div class="field">
+            <label for="read">Read</label>
+            <div class="ui left icon input">        
+              <input class="values" type="text" id="title" name="title" placeholder="Title">
+              <i class="book icon"></i>
+            </div>
           </div>
-        </div>
 
-        <div class="ui left icon input">
-          <input class="values" type="text" id="author" name="author" placeholder="Author">
-          <i class="user icon"></i>
-        </div><br><br>
+          <div class="ui left icon input">
+            <input class="values" type="text" id="author" name="author" placeholder="Author">
+            <i class="user icon"></i>
+          </div><br><br>
 
-        <div class="ui left icon input">
-          <input class="values" type="number" id="pages" name="pages" placeholder="Pages" min="1" max="8000" step="1">
-          <i class="copy outline icon"></i>
-        </div><br><br>
-        
-        <div class="ui toggle checkbox">      
-          <input type="checkbox" id="read" name="read">
-          <label for="read">Read</label>
-        </div><br><br>
-        <div class="actions">
-          <button class="ui red button" id="cancelBtn" type="button">CANCEL</button>
-          <button class="ui green button" id='addBookBtn' type="button">ADD BOOK</button>
-        </div>
-        
-      </form>
+          <div class="ui left icon input">
+            <input class="values" type="number" id="pages" name="pages" placeholder="Pages" min="1" max="8000" step="1">
+            <i class="copy outline icon"></i>
+          </div><br><br>
+          
+          <div class="ui toggle checkbox">      
+            <input type="checkbox" id="read" name="read">
+            <label for="read">Read</label>
+          </div><br><br>
+          <div class="actions">
+            <button class="ui red button" id="cancelBtn" type="button">CANCEL</button>
+            <button class="ui green button" id='addBookBtn' type="button">ADD BOOK</button>
+          </div>          
+        </form>
+      </div>
     </div>
-  </div>
 
-  <button class="ui blue button" id="newBookBtn" type="button">NEW BOOK</button>
+    <p>To add a <strong>book</strong> click on this button</p>
+    <button class="ui blue button" id="newBookBtn" type="button">NEW BOOK</button>
+  </div>
+  
    
   <script src="./js/main.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
