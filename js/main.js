@@ -105,11 +105,58 @@ function getValuesFromInput() {
   const textValues = document.querySelectorAll('.values');
   const { checked } = document.getElementById('read');
   const valuesArray = [];
-  textValues.forEach(element => {
-    valuesArray.push(element.value);
-  });
+  for (let i = 0; i < textValues.length; i += 1) {
+    if (textValues[i].value === '') return false;
+    valuesArray.push(textValues[i].value);
+  }
   valuesArray.push(checked);
   return valuesArray;
+}
+
+function verifyInput(library) {
+  // eslint-disable-next-line no-undef
+  $('.ui.form').form({
+    fields: {
+      title: {
+        identifier: 'title',
+        rules: [
+          {
+            type: 'minLength[5]',
+            prompt: 'The title must be at least {ruleValue} characters long.',
+          },
+        ],
+      },
+      author: {
+        identifier: 'author',
+        rules: [
+          {
+            type: 'minLength[2]',
+            prompt: 'The author\'s name must be at least {ruleValue} characters long.',
+          },
+        ],
+      },
+      pages: {
+        identifier: 'pages',
+        rules: [
+          {
+            type: 'minCount[1]',
+            prompt: 'Please enter the number of pages.',
+          },
+        ],
+      },
+    },
+    onSuccess(event) {
+      event.preventDefault();
+      const values = getValuesFromInput();
+      if (typeof values === 'object') {
+        const newBook = createBook(values);
+        addBook(newBook, library);
+        render(library);
+        // eslint-disable-next-line no-undef
+        $('.mini.modal').modal('hide');
+      }
+    },
+  });
 }
 
 function clearInputs() {
@@ -123,12 +170,7 @@ function clearInputs() {
 function addEventNewBookButton(library) {
   const button = document.getElementById('addBookBtn');
   button.addEventListener('click', () => {
-    const values = getValuesFromInput();
-    const newBook = createBook(values);
-    addBook(newBook, library);
-    render(library);
-    // eslint-disable-next-line no-undef
-    $('.mini.modal').modal('hide');
+    verifyInput(library);
   });
 }
 
